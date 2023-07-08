@@ -8,20 +8,12 @@ orth_poly <- poly(d$nproduced, 3)
 d <- bind_cols(d, as_tibble(orth_poly)) %>%
     rename(linear = "1", quadradic = "2", cubic = "3")
 
-summary(d)
-
 newdata <- predict(orth_poly, seq(20, 580, by = 20))
 newdata <- tibble(
     group = gl(2, nrow(newdata), labels = levels(d$group)),
     linear = rep(newdata[,1], 2),
     quadradic = rep(newdata[,2], 2),
     cubic = rep(newdata[,3], 2)
-)
-
-m <- list(
-    median = lm(z_indegree_med ~ (linear + quadradic + cubic) * group, data = d),
-    clust = lm(z_clust ~ (linear + quadradic + cubic) * group, data = d),
-    aspl = lm(z_dist ~ (linear + quadradic + cubic) * group, data = d)
 )
 
 fbs <- function(df, ix, .data, .formula) {
@@ -33,15 +25,25 @@ fbs <- function(df, ix, .data, .formula) {
     x <- c(x, x[1:k] - x[(k+1):n])
 }
 
-f <- z_indegree_med ~ (linear + quadradic + cubic) * group
-B <- boot(d, fbs, R = 10000, stype = "i", .data = newdata, .formula = f)
-saveRDS(B, file = "bootstrap/median/boot-10000.rds")
+dir.create("bootstrap", showWarnings = FALSE)
 
-b_ci <- with_progress({
-    p <- progressor(nrow(newdata))
-    map(1:nrow(newdata), function(i, b, conf) {
-        boot.ci(b, conf = conf, type = "bca", index = i)$bca[4:5]
-        p()
-    }, b = B, conf = .95)
-})
-saveRDS(b_ci, file = "bootstrap/median/boot-10000_bs-bca_conf-95.rds")
+# Average shortest path length ----
+dir.create(file.path("bootstrap", "aspl"), showWarnings = FALSE)
+f <- z_dist ~ (linear + quadradic + cubic) * group
+B <- boot(d, fbs, R = 10000, stype = "i", parallel = "multicore", .data = newdata, .formula = f)
+saveRDS(B, file = "bootstrap/aspl/boot-10000.rds")
+
+
+# Clustering Coefficient ----
+dir.create(file.path("bootstrap", "clust"), showWarnings = FALSE)
+f <- z_clust ~ (linear + quadradic + cubic) * group
+B <- boot(d, fbs, R = 10000, stype = "i", parallel = "multicore", .data = newdata, .formula = f)
+saveRDS(B, file = "bootstrap/clust/boot-10000.rds")
+
+
+# Indegree ----
+dir.create(file.path("bootstrap", "indegree"), showWarnings = FALSE)
+f <- z_indegree_med ~ (linear + quadradic + cubic) * group
+B <- boot(d, fbs, R = 10000, stype = "i", parallel = "multicore", .data = newdata, .formula = f)
+saveRDS(B, file = "bootstrap/indegree/boot-10000.rds")
+
