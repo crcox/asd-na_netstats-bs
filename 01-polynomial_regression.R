@@ -8,6 +8,13 @@ orth_poly <- poly(d$nproduced, 3)
 d <- bind_cols(d, as_tibble(orth_poly)) %>%
     rename(linear = "1", quadradic = "2", cubic = "3")
 
+models <- list(
+    aspl = lm(z_dist ~ (linear + quadradic + cubic) * group, data = d),
+    clust = lm(z_clust ~ (linear + quadradic + cubic) * group, data = d),
+    indegree = lm(z_indegree_med ~ (linear + quadradic + cubic) * group, data = d)
+)
+saveRDS(models, "bootstrap/base_models.rds")
+
 newdata <- predict(orth_poly, seq(20, 580, by = 20))
 newdata <- tibble(
     group = gl(2, nrow(newdata), labels = levels(d$group)),
