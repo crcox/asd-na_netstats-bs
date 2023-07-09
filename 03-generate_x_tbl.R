@@ -9,10 +9,9 @@ d <- bind_cols(d, as_tibble(orth_poly)) %>%
 
 x_tbl <- predict(orth_poly, seq(20, 580, by = 20))
 x_tbl <- tibble(
-    group = gl(3, nrow(x_tbl), labels = c(levels(d$group), "diff")),
-    linear = rep(x_tbl[,1], 3),
-    quadradic = rep(x_tbl[,2], 3),
-    cubic = rep(x_tbl[,3], 3)
+    linear = x_tbl[,1],
+    quadradic = x_tbl[,2],
+    cubic = x_tbl[,3]
 )
 
 saveRDS(x_tbl, file = "bootstrap/x_tbl.rds")
