@@ -1,0 +1,19 @@
++SingularityImage = "osdf:///ospool/ap20/data/chriscox/containers/R4_0_1-boot.sif"
+
+executable = 02-bs_ci_osg.sh
+arguments = $(metric) $(value_type) $(bonferroni)
+
+log    = log/log.$(Cluster).$(Process)
+error  = log/err.$(Cluster).$(Process)
+output = log/out.$(Cluster).$(Process)
+
++JobDurationCategory = "Medium"
+
+transfer_input_files = 02-bs_ci_osg.R, data/boot-10000_metric-$(metric).rds
+
+request_cpus   = 1
+# 4GB is sufficient for 10k iterations
+request_memory = 4GB
+request_disk   = 12GB
+
+queue metric, value_type, bonferroni from queue_list.csv

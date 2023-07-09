@@ -49,6 +49,31 @@ po/*~
 # R package: bookdown caching files
 /*_files/
 
+
+# OSG Singularity definition
+R4_0_1-boot.def
+
 # Project data
 data/
 bootstrap/
+boot-10000_bs-bca_conf-95_value-0_metric-aspl.rds
+boot-10000_bs-bca_conf-95_value-0_metric-clust.rds
+boot-10000_bs-bca_conf-95_value-0_metric-indegree.rds
+boot-10000_bs-bca_conf-95_value-1_metric-aspl.rds
+boot-10000_bs-bca_conf-95_value-1_metric-clust.rds
+boot-10000_bs-bca_conf-95_value-1_metric-indegree.rds
+boot-10000_bs-bca_conf-95_value-2_metric-aspl.rds
+boot-10000_bs-bca_conf-95_value-2_metric-clust.rds
+boot-10000_bs-bca_conf-95_value-2_metric-indegree.rds
+boot-10000_bs-bca_conf-bonf_value-0_metric-aspl.rds
+boot-10000_bs-bca_conf-bonf_value-0_metric-clust.rds
+boot-10000_bs-bca_conf-bonf_value-0_metric-indegree.rds
+boot-10000_bs-bca_conf-bonf_value-1_metric-aspl.rds
+boot-10000_bs-bca_conf-bonf_value-1_metric-clust.rds
+boot-10000_bs-bca_conf-bonf_value-1_metric-indegree.rds
+boot-10000_bs-bca_conf-bonf_value-2_metric-aspl.rds
+boot-10000_bs-bca_conf-bonf_value-2_metric-clust.rds
+boot-10000_bs-bca_conf-bonf_value-2_metric-indegree.rds
+log/
+queue_list.csv
+
