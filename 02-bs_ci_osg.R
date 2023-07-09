@@ -27,13 +27,9 @@ outfile <- sprintf(
 )
 
 # Average shortest path length ----
-B <- readRDS("boot-10000.rds")
-b_ci <- with_progress({
-    p <- progressor(nsteps)
-    lapply(ix, function(i, b, conf) {
-        p()
+B <- readRDS(sprintf("boot-10000_metric-%s.rds", metric))
+b_ci <- lapply(ix, function(i, b, conf) {
         boot.ci(b, conf = conf, type = "bca", index = i)$bca[4:5]
     }, b = B, conf = 1 - alpha)
-})
 saveRDS(b_ci, file = outfile)
 
