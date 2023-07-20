@@ -18,7 +18,7 @@ y_pred <- map(models, function(m, x) {
     tibble(
         value = gl(3, 29, labels = c("NA", "ASD", "diff")),
         step = rep(1:29, 3),
-        vocab_size = seq(20, 580, by = 20),
+        vocab_size = rep(seq(20, 580, by = 20), 3),
         t0 = c(y, y[1:29] - y[30:58])
     )
 }, x = newdata) %>%
@@ -44,12 +44,16 @@ df <- map2(conds$metrics, conds$labels, function(metric, label, x) {
 
 
 df$value <- factor(df$value, levels = c("ASD", "NA", "diff"))
-ggplot(df, aes(x = vocab_size, y = t0, color = value)) +
+df$sig <- sign(df$cil) == sign(df$ciu)
+ggplot(df, aes(x = vocab_size, y = t0, shape = value, fill = sig)) +
+    scale_shape_manual(values = c(21, 22, 23)) +
+    scale_fill_manual(values = c("white", "grey")) +
     geom_pointrange(aes(ymin = cil, ymax = ciu)) +
+    geom_point(data = df %>% filter(sig)) +
     geom_abline(intercept = 0, slope = 0) +
     facet_grid(~metric) +
     xlab("vocabulary size") +
     ylab("RAN-standardized value") +
     theme_bw(base_size = 18)
 
-ggsave("na-asd_netstats_bs10000_conf-bonf.png", width = 12, height = 6, dpi = 300)
+ggsave("na-asd_netstats_bs10000_conf-bonf_bw.png", width = 12, height = 6, dpi = 300)
