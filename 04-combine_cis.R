@@ -54,7 +54,7 @@ p_bw <- ggplot(df, aes(x = vocab_size, y = t0, shape = val_sig_bw, fill = val_si
     scale_shape_manual(values = c(21, 22, 23, 21, 22, 23)) +
     scale_fill_manual(values = c("white", "white", "white", "grey", "grey", "grey")) +
     geom_linerange(aes(ymin = cil, ymax = ciu)) +
-    geom_point() +
+    geom_point(size = 2) +
     geom_abline(intercept = 0, slope = 0) +
     facet_grid(~metric) +
     xlab("vocabulary size") +
