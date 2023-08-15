@@ -3,7 +3,7 @@ library(purrr)
 library(boot)
 library(progressr)
 
-d <- readRDS(file = "data/asd-na_netstats-ran.rds")
+d <- readRDS(file = "data/asd-na_netstats-ran_2023Aug14.rds")
 orth_poly <- poly(d$nproduced, 3)
 d <- bind_cols(d, as_tibble(orth_poly)) %>%
     rename(linear = "1", quadradic = "2", cubic = "3")
@@ -38,19 +38,20 @@ dir.create("bootstrap", showWarnings = FALSE)
 dir.create(file.path("bootstrap", "aspl"), showWarnings = FALSE)
 f <- z_dist ~ (linear + quadradic + cubic) * group
 B <- boot(d, fbs, R = 10000, stype = "i", parallel = "multicore", .data = newdata, .formula = f)
-saveRDS(B, file = "bootstrap/aspl/boot-10000.rds")
+saveRDS(B, file = "bootstrap/boot-10000_metric-aspl.rds")
+
 
 
 # Clustering Coefficient ----
 dir.create(file.path("bootstrap", "clust"), showWarnings = FALSE)
 f <- z_clust ~ (linear + quadradic + cubic) * group
 B <- boot(d, fbs, R = 10000, stype = "i", parallel = "multicore", .data = newdata, .formula = f)
-saveRDS(B, file = "bootstrap/clust/boot-10000.rds")
+saveRDS(B, file = "bootstrap/boot-10000_metric-clust.rds")
 
 
 # Indegree ----
 dir.create(file.path("bootstrap", "indegree"), showWarnings = FALSE)
 f <- z_indegree_med ~ (linear + quadradic + cubic) * group
 B <- boot(d, fbs, R = 10000, stype = "i", parallel = "multicore", .data = newdata, .formula = f)
-saveRDS(B, file = "bootstrap/indegree/boot-10000.rds")
+saveRDS(B, file = "bootstrap/boot-10000_metric-indegree.rds")
 
