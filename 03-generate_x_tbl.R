@@ -2,7 +2,7 @@ library(dplyr)
 library(purrr)
 library(boot)
 
-d <- readRDS(file = "data/asd-na_netstats-ran.rds")
+d <- readRDS(file = "data/asd-na_netstats-ran_2023Aug14.rds")
 orth_poly <- poly(d$nproduced, 3)
 d <- bind_cols(d, as_tibble(orth_poly)) %>%
     rename(linear = "1", quadradic = "2", cubic = "3")

@@ -17,7 +17,7 @@ e <- ASD_NA_metadataNetstats_2023_RAN %>%
         sex,
         nproduced = nProduced,
         group,
-        z_indegree_mean,
+        z_indegree_med,
         z_clust,
         z_dist
     ) %>%
